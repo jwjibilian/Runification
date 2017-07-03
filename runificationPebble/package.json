@@ -1,0 +1,32 @@
+{
+  "name": "runificationPebble",
+  "author": "RunificationGaTech",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"], 
+  
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "runificationPebble",
+    "capabilities": [ "health" ],
+    "uuid": "3ccbcc65-4bab-47af-ad7b-4a17126fcf1c",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "diorite"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [
+      "dummy"
+    ],
+    "resources": {
+      "media": []
+    }
+
+    {
+	"HeartRate": 0
+    }
+  }
+}
