@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sebnor.runification.MainActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <LinearLayout
+        android:layout_width="266dp"
+        android:layout_height="148dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="41dp"
+        android:id="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="28dp">
+
+        <EditText
+            android:id="@+id/minEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Min"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/maxEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Max"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="311dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="42dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/hrLay"
+        tools:layout_editor_absoluteX="33dp"
+        android:id="@+id/linearLayout">
+
+        <Button
+            android:id="@+id/startBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="onStartClick"
+            android:text="Start"
+            tools:layout_editor_absoluteX="46dp"
+            tools:layout_editor_absoluteY="244dp" />
+
+        <Button
+            android:id="@+id/stopBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick="onStopClick"
+            android:text="Stop"
+            tools:layout_editor_absoluteX="205dp"
+            tools:layout_editor_absoluteY="231dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/hrLay"
+        android:layout_width="333dp"
+        android:layout_height="63dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heart Rate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.123" />
+
+        <EditText
+            android:id="@+id/hr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            tools:layout_editor_absoluteX="85dp"
+            tools:layout_editor_absoluteY="88dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
