@@ -20,7 +20,7 @@ static void outbox_sent_handler(DictionaryIterator *iter, void *context) {
 static void prv_on_health_data(HealthEventType type, void *context) {
   // If the update was from the Heart Rate Monitor, query it
   if (type == HealthEventHeartRateUpdate) {
-    HealthValue value = health_service_peek_current_value(HealthMetricHeartRateBPM);
+    HealthValue value = health_service_peek_current_value(HealthMetricHeartRateRawBPM);
     // Display the heart rate
     APP_LOG(APP_LOG_LEVEL_DEBUG, "HR Report %p", value);
 
@@ -67,6 +67,7 @@ static void prv_init(void) {
     .load = main_window_load,
     .unload = main_window_unload,
   });
+
   window_stack_push(s_main_window, true);
 
   // Open AppMessage
