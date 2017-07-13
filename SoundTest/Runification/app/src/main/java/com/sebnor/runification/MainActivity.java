@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,18 +21,16 @@ import org.puredata.core.PdBase;
 import org.puredata.core.utils.IoUtils;
 
 public class MainActivity extends AppCompatActivity {
-    Random rand;
     private static final String TAG = "Sebnor";
-    MediaPlayer mediaPlayer;
+    MediaPlayer heartbeat;
 
     private EditText hr;
     private EditText minHr;
     private EditText maxHr;
 
     private int prevHr;
-
-    private Handler timer;
-    private Runnable runnable;
+    private Handler heartbeatTimer;
+    private Runnable hbThread;
 
     /**********************
      * Initialize Pure Data
@@ -122,8 +119,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.heartbeat);
-
         // Set initial state of Heart rates values
         hr = (EditText)findViewById(R.id.hr);
         minHr = (EditText)findViewById(R.id.minEdit);
@@ -158,22 +153,21 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, e.getMessage());
         }
 
-        // Init timer
-//        timer = new Handler();
-
-//        runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                timer.postDelayed(this, 1000);
-//            }
-//        };
+        // Heartbeat to indicate system is working
+        heartbeat = MediaPlayer.create(getApplicationContext(), R.raw.heartbeat);
+        heartbeatTimer = new Handler();
+        hbThread = new Runnable() {
+            @Override
+            public void run() {
+                heartbeat.start();
+                heartbeatTimer.postDelayed(this, 1000);
+            }
+        };
     }
 
     @Override
     public void onResume(){
         super.onResume();
-//        PdAudio.startAudio(this);
     }
 
     @Override
@@ -183,12 +177,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onStartClick(View view){
-//        timer.postDelayed(runnable, 1000);
+        heartbeatTimer.postDelayed(hbThread, 60000);
         PdAudio.startAudio(this);
     }
 
     public void onStopClick(View view){
-//        timer.removeCallbacks(runnable);
+        heartbeatTimer.removeCallbacks(hbThread);
         PdAudio.stopAudio();
     }
 
