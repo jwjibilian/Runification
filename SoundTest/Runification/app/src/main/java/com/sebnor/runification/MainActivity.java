@@ -46,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
     private void loadPdPatch() throws IOException {
         File dir = getFilesDir();
         IoUtils.extractZipResource(getResources().openRawResource(R.raw.pd_sonification), dir, true);
-        File pdPatch = new File(dir, "over_hr.pd");
-        PdBase.openPatch(pdPatch.getAbsolutePath());
+        File overHrPd = new File(dir, "over_hr.pd");
+        File underHrPd = new File(dir, "under_hr.pd");
+//        PdBase.openPatch(pdPatch.getAbsolutePath());
+        PdBase.openPatch(overHrPd);
+        PdBase.openPatch(underHrPd);
     }
 
     private void processHr(int newHr){
@@ -55,32 +58,59 @@ public class MainActivity extends AppCompatActivity {
         int minHrVal = Integer.parseInt(minHr.getText().toString());
         int maxHrVal = Integer.parseInt(maxHr.getText().toString());
 
-        PdBase.sendFloat("emitAlert", 0.0f);
+        // Set pd parameters
+        PdBase.sendFloat("overHr", 0.0f);
+        PdBase.sendFloat("underHr", 0.0f);
 
+        float level = 0.0f;
+
+        // Check hr values
         if (newHr < minHrVal){
             hr.setTextColor(Color.BLUE);
+            float diff = minHrVal - newHr;
+
+            if (diff < 10){
+                level = 1.0f;
+            }
+            else if (diff < 20){
+                level = 2.0f;
+            }
+            else if (diff < 30){
+                level = 3.0f;
+            }
+            else if (diff < 40){
+                level = 4.0f;
+            }
+            else {
+                level = 5.0f;
+            }
+
+            PdBase.sendFloat("alertLevel", level);
+            PdBase.sendFloat("underHr", 1.0f);
         }
         else if (newHr > maxHrVal){
             hr.setTextColor(Color.RED);
-            float level = 0.0f;
 
-            if ((newHr - maxHrVal) < 10){
+            float diff = newHr - maxHrVal;
+
+            if (diff < 10){
                 level = 1.0f;
             }
-            else if ((newHr - maxHrVal) < 20){
+            else if (diff < 20){
                 level = 2.0f;
             }
-            else if ((newHr - maxHrVal) < 30){
+            else if (diff < 30){
                 level = 3.0f;
             }
-            else if ((newHr - maxHrVal) < 40){
+            else if (diff < 40){
                 level = 4.0f;
             }
-            else if ((newHr - maxHrVal) < 50){
+            else {
                 level = 5.0f;
             }
+
             PdBase.sendFloat("alertLevel", level);
-            PdBase.sendFloat("emitAlert", 1.0f);
+            PdBase.sendFloat("overHr", 1.0f);
         }
         else {
             hr.setTextColor(Color.BLACK);
