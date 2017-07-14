@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/SetTrainingButton"
+        android:id="@+id/IntervalTrainingButton"
         android:layout_width="300dp"
         android:layout_height="64dp"
         android:layout_marginLeft="8dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/WLossButton"
         android:layout_width="300dp"
         android:layout_height="64dp"
         android:layout_marginLeft="8dp"

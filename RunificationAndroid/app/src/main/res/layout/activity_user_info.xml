@@ -162,7 +162,7 @@
         android:layout_marginStart="8dp" />
 
     <Spinner
-        android:id="@+id/GenderSpiner"
+        android:id="@+id/GenderSpinner"
         android:layout_width="117dp"
         android:layout_height="24dp"
         android:layout_marginLeft="8dp"
@@ -253,7 +253,7 @@
         android:layout_marginStart="4dp" />
 
     <Button
-        android:id="@+id/Cancel Button"
+        android:id="@+id/CancelButton"
         android:layout_width="184dp"
         android:layout_height="48dp"
         android:layout_marginRight="8dp"
