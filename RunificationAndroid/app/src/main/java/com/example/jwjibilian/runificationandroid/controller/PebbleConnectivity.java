@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.jwjibilian.runificationandroid.view.TestHeartCommsActivity;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
@@ -72,7 +71,7 @@ public class PebbleConnectivity {
             this.HR = HR;
 /*
             timer = new Timer();
-            updateHR = new TestHeartCommsActivity.MyTimerTask();
+            updateHR = new MainMenu.MyTimerTask();
             timer.scheduleAtFixedRate(updateHR, 0,1000);
 
 */
