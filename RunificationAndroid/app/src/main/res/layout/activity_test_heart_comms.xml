@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jwjibilian.runificationandroid.TestHeartCommsActivity">
+    tools:context="com.example.jwjibilian.runificationandroid.view.TestHeartCommsActivity">
 
     <TextView
         android:id="@+id/heartRateID"
