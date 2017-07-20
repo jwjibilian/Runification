@@ -14,6 +14,8 @@ import android.widget.EditText;
 
 import com.example.jwjibilian.runificationandroid.R;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
+import com.getpebble.android.kit.PebbleKit;
+import com.getpebble.android.kit.util.PebbleDictionary;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
@@ -22,10 +24,14 @@ import org.puredata.core.utils.IoUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 public class WeightLossTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
     public static final String USER_PREF = "User";
+
+    private static final UUID APP_UUID = UUID.fromString("3ccbcc65-4bab-47af-ad7b-4a17126fcf1c");
+    private static PebbleKit.PebbleDataReceiver pebbleDataReceiver;
 
     private EditText currHrTxt;
     private EditText lowHrTxt;
@@ -94,6 +100,18 @@ public class WeightLossTraining extends AppCompatActivity {
 
         sonify = new Sonification(this.getApplicationContext());
         loadHrParams();
+
+        // Create Data receiver for Pebble
+        pebbleDataReceiver= new PebbleKit.PebbleDataReceiver(APP_UUID) {
+            public void receiveData(Context context, int transactionId, PebbleDictionary dict) {
+                PebbleKit.sendAckToPebble(context, transactionId);
+
+                // Get and Update HR value
+                int newHr = dict.getInteger(0).intValue();
+                updateHr(newHr);
+            }
+        };
+        PebbleKit.registerReceivedDataHandler(getApplicationContext(), pebbleDataReceiver);
     }
 
     private void updateHr(int newHr){

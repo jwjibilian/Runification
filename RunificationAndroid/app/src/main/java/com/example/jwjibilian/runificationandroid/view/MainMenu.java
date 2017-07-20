@@ -8,21 +8,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.example.jwjibilian.runificationandroid.controller.PebbleConnectivity;
 
 public class MainMenu extends AppCompatActivity {
 
-
-
-
+    private PebbleConnectivity comms;
 
     @Override
     public Context getApplicationContext() {
         return super.getApplicationContext();
     }
-
- /*   private String info = "TestComms";
-    private static TextView HR;
-    private PebbleConnectivity comms;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,45 +49,9 @@ public class MainMenu extends AppCompatActivity {
                 }
             });
 
-
-
-
-
-
         //this stuff is what I usded to get communications working with the watch
-/*        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_menu);
-        Log.d(info, "MakingAThing" );
-        try{
-            HR = (TextView) findViewById(R.id.heartRateID);
-        } catch ( Exception e) {
-            Log.d("TextViewHR", e.getMessage());
-
-        }
-    comms = new PebbleConnectivity(getApplicationContext(), HR);
-    comms.startApp(getApplicationContext());*/
-
-
-
-
+    comms = new PebbleConnectivity(getApplicationContext());
     }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        //Starts the communications with the watch
-        //comms.startListener();
-
-
-
-
-
-
-
-    }
-
-
-
 }
 
 

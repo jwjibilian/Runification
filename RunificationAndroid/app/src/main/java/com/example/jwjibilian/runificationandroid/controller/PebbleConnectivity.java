@@ -13,9 +13,6 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.lang.Runnable;
 
-/**
- * Created by jwjibilian on 7/14/17.
- */
 
 public class PebbleConnectivity {
     private static PebbleKit.PebbleDataReceiver mDataReciver;
@@ -27,7 +24,6 @@ public class PebbleConnectivity {
 
     private final Handler handler = new Handler();
 
-    private TextView HR;
 
     /**
      *
@@ -35,115 +31,35 @@ public class PebbleConnectivity {
      * Also sets what text views to be updated
      *
      * @param appContext Context that is open in the app
-     * @param HR Text view for the Heart rate
      */
-    public PebbleConnectivity(Context appContext, TextView HR){
+    public PebbleConnectivity(Context appContext){
+        PebbleKit.startAppOnPebble(appContext, APP_UUID);  // starts the app on the watch
 
-
-        Log.i(info, mDataReciver + "" );
-        if(mDataReciver == null) {
-            mDataReciver= new PebbleKit.PebbleDataReceiver(APP_UUID) {
-
-                /**
-                 * Creates the function to get data from the dictionary from pebble watch.
-                 * @param context The app context
-                 * @param transactionId Transaction id made by pebble app on phone
-                 * @param dict dict made by pebble app on phone
-                 */
-                public void receiveData(Context context, int transactionId, PebbleDictionary dict) {
-                    // Always ACK
-                    PebbleKit.sendAckToPebble(context, transactionId);
-                    Log.i("receiveData", "Got message from Pebble!");
-
-                    heartRate = dict.getInteger(0).intValue();
-
-
-
-
-
-
-                }
-
-            };
-
-            Log.i(info, mDataReciver + "HEART!" + heartRate );
-            PebbleKit.registerReceivedDataHandler(appContext, mDataReciver);
-            this.HR = HR;
-/*
-            timer = new Timer();
-            updateHR = new MainMenu.MyTimerTask();
-            timer.scheduleAtFixedRate(updateHR, 0,1000);
-
-*/
-
-        }
-
-
-
-    }
-
-    /**
-     * starts the app on the phone
-     * @param appContext
-     */
-    public void startApp(Context appContext){
-        PebbleKit.startAppOnPebble(appContext, APP_UUID);
-
-
-    }
-
-    /**
-     * This starts
-     */
-    public void startListener() {
-
-        Runnable runnable = new Runnable() {
-
-
-            @Override
-            public void run() {
-                try {
-
-
-                    Log.i("Timer", "Trying to update HR" + HR + "   " + heartRate);
-                    HR.setText(heartRate + "");
-
-
-                } catch (Exception e) {
-                    Log.i("Error", e.getMessage());
-                } finally {
-                    //also call the same runnable to call it at regular interval
-                    handler.postDelayed(this, 1000);
-                }
-            }
-
-
-
-//        class MyTimerTask extends TimerTask {
+//        Log.i(info, mDataReciver + "" );
+//        if(mDataReciver == null) {
+//            mDataReciver= new PebbleKit.PebbleDataReceiver(APP_UUID) {
 //
-//            @Override
-//            public void run() {
+//                /**
+//                 * Creates the function to get data from the dictionary from pebble watch.
+//                 * @param context The app context
+//                 * @param transactionId Transaction id made by pebble app on phone
+//                 * @param dict dict made by pebble app on phone
+//                 */
+//                public void receiveData(Context context, int transactionId, PebbleDictionary dict) {
+//                    // Always ACK
+//                    PebbleKit.sendAckToPebble(context, transactionId);
+//                    Log.i("receiveData", "Got message from Pebble!");
 //
-//                runOnUiThread(new Runnable(){
+//                    heartRate = dict.getInteger(0).intValue();
+//                }
 //
-//                    @Override
-//                    public void run() {
-//                        Log.i("Timer", "Trying to update HR" + HR + "   "+heartRate);
-//                        try {
-//                            HR.setText(heartRate + "");
-//                        } catch(Throwable e) {
-//                            Log.i("Error", e.getMessage());
-//                        }
-//                    }});
-//            }
-//
+//            };
+
+//            Log.i(info, mDataReciver + "HEART!" + heartRate );
+//            PebbleKit.registerReceivedDataHandler(appContext, mDataReciver);
+//            this.HR = HR;
+
 //        }
-
-        };
-
-        new Thread(runnable).start();
     }
-
-
 
 }

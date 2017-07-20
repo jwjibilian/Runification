@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.getpebble.android.kit.PebbleKit;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
@@ -14,6 +15,7 @@ import org.puredata.core.utils.IoUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Created by nsebkhi3 on 7/20/2017.
@@ -21,6 +23,7 @@ import java.io.IOException;
 
 public class Sonification {
     private static final String TAG = "RUNIF";
+
     private int highHr, lowHr, avgHr;
     double alpha = 0.7;
     MediaPlayer heartbeat;
