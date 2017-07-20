@@ -188,23 +188,23 @@
         android:layout_marginStart="8dp" />
 
     <EditText
-        android:id="@+id/AgeText"
+        android:id="@+id/RestingHRText"
         android:layout_width="114dp"
         android:layout_height="43dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="275dp"
         android:ems="10"
         android:inputType="number"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="275dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/textView5"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/AgeText"
         android:layout_width="114dp"
         android:layout_height="43dp"
         android:layout_marginTop="110dp"
