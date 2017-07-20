@@ -50,7 +50,7 @@ public class MainMenu extends AppCompatActivity {
             });
 
         //this stuff is what I usded to get communications working with the watch
-    comms = new PebbleConnectivity(getApplicationContext());
+        comms = new PebbleConnectivity(getApplicationContext());
     }
 }
 

@@ -25,7 +25,7 @@ public class Sonification {
     private static final String TAG = "RUNIF";
 
     private int highHr, lowHr, avgHr;
-    double alpha = 0.7;
+    double alpha = 0.5;
     MediaPlayer heartbeat;
 
     private Handler hrSonifyTimer;
@@ -43,7 +43,7 @@ public class Sonification {
         catch (IOException e){Log.i(TAG, e.getMessage());}
 
         // Heartbeat to indicate system is working
-        heartbeat = MediaPlayer.create(context, R.raw.heartbeat);
+        heartbeat = MediaPlayer.create(context.getApplicationContext(), R.raw.heartbeat);
         heartbeatTimer = new Handler();
         hbThread = new Runnable() {
             @Override
@@ -138,9 +138,10 @@ public class Sonification {
         }
     }
 
-    public void updateHr(int newHr){
+    public int updateHr(int newHr){
         // Update average HR
         avgHr = (int) ((alpha * newHr) + (1.0 - alpha) * avgHr);
+        return avgHr;
     }
 
     public void setHrParams(int lowHr, int highHr, int restHr){

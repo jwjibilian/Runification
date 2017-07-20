@@ -34,6 +34,7 @@ public class WeightLossTraining extends AppCompatActivity {
     private static PebbleKit.PebbleDataReceiver pebbleDataReceiver;
 
     private EditText currHrTxt;
+    private EditText avgHrTxt;
     private EditText lowHrTxt;
     private EditText highHrTxt;
 
@@ -43,15 +44,19 @@ public class WeightLossTraining extends AppCompatActivity {
      * Load user parameters for this training
      *****************************************/
     private void loadHrParams(){
-        // Get current username
-        SharedPreferences currentUser = getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
-        String username = currentUser.getString("username", null);
+//        // Get current username
+//        SharedPreferences currentUser = getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
+//        String username = currentUser.getString("username", null);
+//
+//        // Get HR bounds for this user
+//        SharedPreferences userInfo = getSharedPreferences(username, Context.MODE_PRIVATE);
+//        int restHr = userInfo.getInt("rest_hr", 0);
+//        int lowHr  = userInfo.getInt("low_hr_beginner", 0);
+//        int highHr = userInfo.getInt("high_hr_beginner", 0);
 
-        // Get HR bounds for this user
-        SharedPreferences userInfo = getSharedPreferences(username, Context.MODE_PRIVATE);
-        int restHr = userInfo.getInt("rest_hr", 0);
-        int lowHr  = userInfo.getInt("low_hr_beginner", 0);
-        int highHr = userInfo.getInt("high_hr_beginner", 0);
+        int restHr = 70;
+        int lowHr  = 60;
+        int highHr = 100;
 
         // Update text fields of hr bounds
         lowHrTxt.setText(String.valueOf(lowHr));
@@ -97,6 +102,7 @@ public class WeightLossTraining extends AppCompatActivity {
         lowHrTxt  = (EditText)findViewById(R.id.LowHRGoal);
         highHrTxt = (EditText)findViewById(R.id.HighHRGoal);
         currHrTxt = (EditText)findViewById(R.id.CurrentHR);
+        avgHrTxt  = (EditText)findViewById(R.id.avgHR);
 
         sonify = new Sonification(this.getApplicationContext());
         loadHrParams();
@@ -116,6 +122,7 @@ public class WeightLossTraining extends AppCompatActivity {
 
     private void updateHr(int newHr){
         currHrTxt.setText(String.valueOf(newHr));
-        sonify.updateHr(newHr);
+        int avgHr = sonify.updateHr(newHr);
+        avgHrTxt.setText(String.valueOf(avgHr));
     }
 }
