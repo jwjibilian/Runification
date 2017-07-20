@@ -150,6 +150,13 @@ public class Sonification {
         this.avgHr = restHr;
     }
 
+    public void setLowHr(int lowHr){
+        this.lowHr = lowHr;
+    }
+
+    public void setHighHr(int highHr){
+        this.highHr = highHr;
+    }
     public void start(){
         heartbeatTimer.postDelayed(hbThread, 10);     // Indicate if syst is working right away
         hrSonifyTimer.postDelayed(hrSonifyTh, 60000); // Give 1 minute for HR to stabilize
