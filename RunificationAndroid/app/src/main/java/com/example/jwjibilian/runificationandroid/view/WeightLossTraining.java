@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.example.jwjibilian.runificationandroid.controller.Sonification;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
@@ -25,36 +26,12 @@ import java.io.IOException;
 public class WeightLossTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
     public static final String USER_PREF = "User";
-    private int highHr, lowHr, avgHr;
-    double alpha = 0.7;
-    MediaPlayer heartbeat;
 
     private EditText currHrTxt;
     private EditText lowHrTxt;
     private EditText highHrTxt;
 
-    private Handler heartbeatTimer;
-    private Runnable hbThread;
-
-    private Handler hrSonifyTimer;
-    private Runnable hrSonifyTh;
-
-    /**********************
-     * Initialize Pure Data
-     ***********************/
-    private void initPD() throws IOException {
-        // Init audio context
-        int sampleRate = AudioParameters.suggestSampleRate();
-        PdAudio.initAudio(sampleRate, 0, 2, 8, true);
-
-        // Load PD patches
-        File dir = getFilesDir();
-        IoUtils.extractZipResource(getResources().openRawResource(R.raw.pd_sonification), dir, true);
-        File overHrPd = new File(dir, "over_hr.pd");
-        File underHrPd = new File(dir, "under_hr.pd");
-        PdBase.openPatch(overHrPd);
-        PdBase.openPatch(underHrPd);
-    }
+    Sonification sonify;
 
     /*****************************************
      * Load user parameters for this training
@@ -66,23 +43,24 @@ public class WeightLossTraining extends AppCompatActivity {
 
         // Get HR bounds for this user
         SharedPreferences userInfo = getSharedPreferences(username, Context.MODE_PRIVATE);
-        avgHr = userInfo.getInt("rest_hr", 0);
-        lowHr  = userInfo.getInt("low_hr_beginner", 0);
-        highHr = userInfo.getInt("high_hr_beginner", 0);
+        int restHr = userInfo.getInt("rest_hr", 0);
+        int lowHr  = userInfo.getInt("low_hr_beginner", 0);
+        int highHr = userInfo.getInt("high_hr_beginner", 0);
 
         // Update text fields of hr bounds
         lowHrTxt.setText(String.valueOf(lowHr));
         highHrTxt.setText(String.valueOf(highHr));
-        currHrTxt.setText(String.valueOf(avgHr));
+        currHrTxt.setText(String.valueOf(restHr));
+
+        // Update Sonification Mgr
+        sonify.setHrParams(lowHr, highHr, restHr);
     }
 
     /*****************************************
      * Start/Stop buttons
      *****************************************/
     public void onStartClick(View view){
-        heartbeatTimer.postDelayed(hbThread, 10);     // Indicate if syst is working right away
-        hrSonifyTimer.postDelayed(hrSonifyTh, 60000); // Give 1 minute for HR to stabilize
-        PdAudio.startAudio(this);
+        sonify.start();
 
         // Enable Stop and disable Start buttons
         Button startBtn = (Button)findViewById(R.id.startWeightLoss);
@@ -92,9 +70,7 @@ public class WeightLossTraining extends AppCompatActivity {
     }
 
     public void onStopClick(View view){
-        heartbeatTimer.removeCallbacks(hbThread);
-        hrSonifyTimer.removeCallbacks(hrSonifyTh);
-        PdAudio.stopAudio();
+        sonify.stop();
 
         // Disable Stop and Enable Start buttons
         Button startBtn = (Button)findViewById(R.id.startWeightLoss);
@@ -116,100 +92,12 @@ public class WeightLossTraining extends AppCompatActivity {
         highHrTxt = (EditText)findViewById(R.id.HighHRGoal);
         currHrTxt = (EditText)findViewById(R.id.CurrentHR);
 
+        sonify = new Sonification(this.getApplicationContext());
         loadHrParams();
-
-        // Init Pure Data
-        try{initPD();}
-        catch (IOException e){Log.i(TAG, e.getMessage());}
-
-        // Heartbeat to indicate system is working
-        heartbeat = MediaPlayer.create(getApplicationContext(), R.raw.heartbeat);
-        heartbeatTimer = new Handler();
-        hbThread = new Runnable() {
-            @Override
-            public void run() {
-                long hbDelay = 150 * 1000; // Delay btw heartbeats in ms
-                heartbeat.start();
-                heartbeatTimer.postDelayed(this, hbDelay);
-            }
-        };
-
-        // Sonify HR
-        hrSonifyTimer = new Handler();
-        hrSonifyTh = new Runnable() {
-            @Override
-            public void run() {
-                processHr();
-                long hrSonifyDelay = 30 * 1000; // Delay btw sonification in ms
-                hrSonifyTimer.postDelayed(this, hrSonifyDelay);
-            }
-        };
-    }
-
-    private void processHr(){
-        // initialize pd parameters
-        float level = 0.0f;
-        PdBase.sendFloat("overHr", 0.0f);
-        PdBase.sendFloat("underHr", 0.0f);
-
-        // Check hr values
-        if (avgHr < lowHr){
-            currHrTxt.setTextColor(Color.BLUE);
-            float diff = lowHr - avgHr;
-
-            if (diff < 10){
-                level = 1.0f;
-            }
-            else if (diff < 20){
-                level = 2.0f;
-            }
-            else if (diff < 30){
-                level = 3.0f;
-            }
-            else if (diff < 40){
-                level = 4.0f;
-            }
-            else {
-                level = 5.0f;
-            }
-
-            PdBase.sendFloat("alertLevel", level);
-            PdBase.sendFloat("underHr", 1.0f);
-        }
-        else if (avgHr > highHr){
-            currHrTxt.setTextColor(Color.RED);
-
-            float diff = avgHr - highHr;
-
-            if (diff < 10){
-                level = 1.0f;
-            }
-            else if (diff < 20){
-                level = 2.0f;
-            }
-            else if (diff < 30){
-                level = 3.0f;
-            }
-            else if (diff < 40){
-                level = 4.0f;
-            }
-            else {
-                level = 5.0f;
-            }
-
-            PdBase.sendFloat("alertLevel", level);
-            PdBase.sendFloat("overHr", 1.0f);
-        }
-        else {
-            currHrTxt.setTextColor(Color.BLACK);
-        }
     }
 
     private void updateHr(int newHr){
-        // Update current hr display
         currHrTxt.setText(String.valueOf(newHr));
-
-        // Update average HR
-        avgHr = (int) ((alpha * newHr) + (1.0 - alpha) * avgHr);
+        sonify.updateHr(newHr);
     }
 }
