@@ -26,6 +26,7 @@ public class WeightLossTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
     public static final String USER_PREF = "User";
     private int highHr, lowHr, avgHr;
+    double alpha = 0.7;
     MediaPlayer heartbeat;
 
     private EditText currHrTxt;
@@ -209,6 +210,6 @@ public class WeightLossTraining extends AppCompatActivity {
         currHrTxt.setText(String.valueOf(newHr));
 
         // Update average HR
-        avgHr = newHr;
+        avgHr = (int) ((alpha * newHr) + (1.0 - alpha) * avgHr);
     }
 }
