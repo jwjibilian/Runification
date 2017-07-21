@@ -1,14 +1,53 @@
 package com.example.jwjibilian.runificationandroid.model;
 
-import java.io.Serializable;
+import android.content.Context;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 /**
  * Created by jwjibilian on 7/20/17.
  */
-public class User implements Serializable{
+
+public class User {
+    private static final User ourInstance = new User();
+    private final String filename = "currentUser.txt";
+    private String name;
+    private int gender;
+    private int height;
+    private int age;
+    private float weight;
+    private int level;
+    private int restingHR;
+    private static Context context;
+
+    public static User getInstance(Context theContext) {
+
+        context = theContext;
+        return ourInstance;
+    }
+
+    private User() {
+        this.name = "";
+        this.gender = 0;
+        this.height = 0;
+        this.age = 0;
+        this.level = 0;
+        this.restingHR = 70;
+        this.weight = 0;
+    }
 
 
-    public String getGender() {
+    public String getName() {
+        return name;
+    }
+
+    public int getGender() {
         return gender;
     }
 
@@ -36,7 +75,7 @@ public class User implements Serializable{
         this.name = name;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
@@ -59,27 +98,47 @@ public class User implements Serializable{
     public void setRestingHR(int restingHR) {
         this.restingHR = restingHR;
     }
+    public void loadUser(){
+        try {
+            String str = "";
+            StringBuffer buf = new StringBuffer();
+            InputStream is = context.openFileInput(filename);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+/*            while ((str = reader.readLine()) != null) {
+                buf.append(str + "\n" );
+            }*/
+            setName(reader.readLine());
+            setGender(Integer.parseInt(reader.readLine()));
+            setHeight(Integer.parseInt(reader.readLine()));
+            setAge(Integer.parseInt(reader.readLine()));
+            setWeight(Float.parseFloat(reader.readLine()));
+            setLevel(Integer.parseInt(reader.readLine()));
+            setRestingHR(Integer.parseInt(reader.readLine()));
+        } catch (Exception e){
+            Log.e("ULOADERR", e.getMessage());
 
-    private String name;
-    private String gender;
-    private int height;
-    private int age;
-    private float weight;
-    private int level;
-    private int restingHR;
+        }
 
-    public User(String name, String gender, int height, int age, int level, int restingHR, float weight){
-        this.name = name;
-        this.gender = gender;
-        this.height = height;
-        this.age = age;
-        this.level = level;
-        this.restingHR = restingHR;
-        this.weight = weight;
+        
     }
 
-    public void getName(){
-
+    public void saveUser(){
+        FileOutputStream outputStream;
+        String string = name + "\n" + gender + "\n" + height + "\n" + age + "\n" + weight + "\n"
+                + level + "\n" + restingHR + "\n";
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(string.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
+
 }
+
+
