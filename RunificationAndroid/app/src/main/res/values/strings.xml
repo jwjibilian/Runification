@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RunificationAndroid</string>
+    <string name="app_name">Runification</string>
     <string-array name="genders_array">
         <item>Male</item>
         <item>Female</item>

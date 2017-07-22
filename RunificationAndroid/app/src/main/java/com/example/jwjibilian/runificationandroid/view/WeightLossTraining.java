@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.example.jwjibilian.runificationandroid.R;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
+import com.example.jwjibilian.runificationandroid.model.User;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
@@ -30,7 +31,7 @@ import java.util.UUID;
 
 public class WeightLossTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
-    public static final String USER_PREF = "User";
+    private User user = User.getInstance(this);
 
     private static final UUID APP_UUID = UUID.fromString("3ccbcc65-4bab-47af-ad7b-4a17126fcf1c");
     private static PebbleKit.PebbleDataReceiver pebbleDataReceiver;
@@ -46,19 +47,14 @@ public class WeightLossTraining extends AppCompatActivity {
      * Load user parameters for this training
      *****************************************/
     private void loadHrParams(){
-//        // Get current username
-//        SharedPreferences currentUser = getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
-//        String username = currentUser.getString("username", null);
-//
-//        // Get HR bounds for this user
-//        SharedPreferences userInfo = getSharedPreferences(username, Context.MODE_PRIVATE);
-//        int restHr = userInfo.getInt("rest_hr", 0);
-//        int lowHr  = userInfo.getInt("low_hr_beginner", 0);
-//        int highHr = userInfo.getInt("high_hr_beginner", 0);
+//        int restHr = 70;
+//        int lowHr  = 60;
+//        int highHr = 100;
 
-        int restHr = 70;
-        int lowHr  = 60;
-        int highHr = 100;
+        // Get current user Heart Rate parameters
+        int restHr = user.getRestingHR();
+        int lowHr  = user.getLowHrWeightLoss();
+        int highHr = user.getHighHrWeightLoss();
 
         // Update text fields of hr bounds
         lowHrTxt.setText(String.valueOf(lowHr));

@@ -4,272 +4,259 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jwjibilian.runificationandroid.view.UserInfo">
-
-    <TextView
-        android:id="@+id/textHeight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="126dp"
-        android:text="Height:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="162dp"
-        android:layout_marginStart="126dp" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="16dp"
-        android:layout_height="26dp"
-        android:text="''"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="152dp"
-        app:layout_constraintLeft_toRightOf="@+id/InchText"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="16dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="152dp"
-        android:text="'"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/FeetText" />
+    tools:context="com.example.jwjibilian.runificationandroid.view.UserInfo"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:text="User Info"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         android:textSize="36sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp" />
+
+
+    <LinearLayout
+        android:id="@+id/usernameLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="24dp">
+
+        <TextView
+            android:id="@+id/usernameLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="User name:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="243dp" />
+
+        <EditText
+            android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="128dp"
+            tools:layout_editor_absoluteY="-80dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/genderLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameLay"
+        android:layout_marginStart="24dp">
+
+        <TextView
+            android:id="@+id/genderLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Gender:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="94dp"
+            tools:layout_editor_absoluteY="344dp" />
+
+        <Spinner
+            android:id="@+id/GenderSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="83dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ageLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="User name:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/genderLay">
 
-    <TextView
-        android:id="@+id/textView5"
+        <TextView
+            android:id="@+id/ageLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Age:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="140dp"
+            tools:layout_editor_absoluteY="243dp" />
+
+        <EditText
+            android:id="@+id/AgeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="189dp"
+            tools:layout_editor_absoluteY="211dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/levelLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resting Heart Rate:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="287dp"
-        android:layout_marginLeft="8dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/ageLay"
+        android:layout_marginLeft="24dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="24dp">
 
-    <TextView
-        android:id="@+id/textView15"
+        <TextView
+            android:id="@+id/levelLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Level:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="267dp" />
+
+        <Spinner
+            android:id="@+id/LevelSlider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="77dp"
+            tools:layout_editor_absoluteY="255dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/restingHrLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Level:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        android:layout_marginLeft="8dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/levelLay"
+        android:layout_marginLeft="24dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="243dp"
-        android:layout_marginStart="8dp" />
+        android:layout_marginStart="24dp">
 
-    <TextView
-        android:id="@+id/textView14"
+        <TextView
+            android:id="@+id/restHrLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="HR at Rest:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="299dp" />
+
+        <EditText
+            android:id="@+id/RestingHRText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="192dp"
+            tools:layout_editor_absoluteY="287dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/racePaceLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Gender:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/restingHrLay">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/racePaceLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Race pace:"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+        <EditText
+            android:id="@+id/racePaceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="10.0"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="66dp"
+            tools:layout_editor_absoluteY="313dp" />
+
+        <TextView
+            android:id="@+id/paceUnitLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="miles/min"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLay"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:text="Age:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="112dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView14"
-        android:layout_marginLeft="137dp"
-        android:layout_marginStart="137dp" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/racePaceLay"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="160dp"
-        android:text="Weight:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintLeft_toLeftOf="parent">
 
-    <EditText
-        android:id="@+id/UserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintLeft_toRightOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4"
-        android:layout_marginStart="8dp" />
+        <Button
+            android:id="@+id/SaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="376dp" />
 
-    <Spinner
-        android:id="@+id/LevelSlider"
-        android:layout_width="167dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="243dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView15"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/GenderSpinner"
-        android:layout_width="117dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="112dp"
-        app:layout_constraintLeft_toRightOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/WeightText"
-        android:layout_width="114dp"
-        android:layout_height="43dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="160dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintLeft_toRightOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43"
-        android:layout_marginStart="8dp" />
-
-    <EditText
-        android:id="@+id/RestingHRText"
-        android:layout_width="114dp"
-        android:layout_height="43dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="275dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintLeft_toRightOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/AgeText"
-        android:layout_width="114dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="110dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintLeft_toRightOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48000002" />
-
-    <EditText
-        android:id="@+id/InchText"
-        android:layout_width="40dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="58dp"
-        android:layout_marginTop="161dp"
-        android:ems="10"
-        android:inputType="number"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textHeight"
-        app:layout_constraintLeft_toRightOf="@+id/textHeight"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.409"
-        android:layout_marginStart="58dp" />
-
-    <EditText
-        android:id="@+id/FeetText"
-        android:layout_width="40dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="161dp"
-        android:ems="10"
-        android:inputType="number"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textHeight"
-        app:layout_constraintLeft_toRightOf="@+id/textHeight"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="4dp" />
-
-    <Button
-        android:id="@+id/CancelButton"
-        android:layout_width="184dp"
-        android:layout_height="48dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="376dp"
-        android:text="Cancel"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/SaveButton"
-        android:layout_width="184dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="376dp"
-        android:text="Save"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/CancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            tools:layout_editor_absoluteX="192dp"
+            tools:layout_editor_absoluteY="376dp" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

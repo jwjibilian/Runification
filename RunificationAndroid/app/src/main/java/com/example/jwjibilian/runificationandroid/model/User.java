@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,17 +18,28 @@ import java.io.OutputStream;
 public class User {
     private static final User ourInstance = new User();
     private final String filename = "currentUser.txt";
-    private String name;
-    private int gender;
-    private int height;
-    private int age;
-    private float weight;
-    private int level;
-    private int restingHR;
     private static Context context;
 
-    public static User getInstance(Context theContext) {
+    // General Info
+    private String name;
+    private int gender;
+    private int age;
+    private int level;
 
+    // Hear Rate
+    private int restingHR;
+    private int lowHrWeightLoss;
+    private int highHrWeightLoss;
+    private int lowHrInterval;
+    private int highHrInterval;
+
+    // Pace
+    private int racePace;
+    private int lowPaceInterval;
+    private int highPaceInterval;
+
+
+    public static User getInstance(Context theContext) {
         context = theContext;
         return ourInstance;
     }
@@ -35,13 +47,60 @@ public class User {
     private User() {
         this.name = "";
         this.gender = 0;
-        this.height = 0;
         this.age = 0;
         this.level = 0;
         this.restingHR = 70;
-        this.weight = 0;
+        this.lowHrWeightLoss = 0;
+        this.highHrWeightLoss = 0;
+        this.lowHrInterval = 0;
+        this.highHrInterval = 0;
+        this.lowPaceInterval = 0;
+        this.highPaceInterval = 0;
+        this.racePace = 10;
     }
 
+    public void loadUser(){
+        try {
+            InputStream is = context.openFileInput(filename);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+            setName(reader.readLine());
+            setGender(Integer.parseInt(reader.readLine()));
+            setAge(Integer.parseInt(reader.readLine()));
+            setLevel(Integer.parseInt(reader.readLine()));
+            setRestingHR(Integer.parseInt(reader.readLine()));
+            setLowHrWeightLoss(Integer.parseInt(reader.readLine()));
+            setHighHrWeightLoss(Integer.parseInt(reader.readLine()));
+            setLowHrInterval(Integer.parseInt(reader.readLine()));
+            setHighHrInterval(Integer.parseInt(reader.readLine()));
+            setLowPaceInterval(Integer.parseInt(reader.readLine()));
+            setHighPaceInterval(Integer.parseInt(reader.readLine()));
+            setRacePace(Integer.parseInt(reader.readLine()));
+        }
+        catch (FileNotFoundException e){
+            Log.e("ULOADERR", "File Not Found, Creating a first user");
+            saveUser();
+        }
+        catch (Exception e){
+            Log.e("ULOADERR", e.getMessage());
+            saveUser();
+        }
+    }
+
+    public void saveUser(){
+        FileOutputStream outputStream;
+        String string = name + "\n" + gender + "\n" + age + "\n" + level + "\n" + restingHR + "\n"
+                + lowHrWeightLoss + "\n" + highHrWeightLoss + "\n"
+                + lowHrInterval + "\n" + highHrInterval + "\n"
+                + lowPaceInterval + "\n" + highPaceInterval+ "\n" + racePace + "\n";
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(string.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getName() {
         return name;
@@ -51,16 +110,8 @@ public class User {
         return gender;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
     public int getAge() {
         return age;
-    }
-
-    public float getWeight() {
-        return weight;
     }
 
     public int getLevel() {
@@ -71,6 +122,34 @@ public class User {
         return restingHR;
     }
 
+    public int getLowHrWeightLoss() {
+        return lowHrWeightLoss;
+    }
+
+    public int getHighHrWeightLoss() {
+        return highHrWeightLoss;
+    }
+
+    public int getLowHrInterval() {
+        return lowHrInterval;
+    }
+
+    public int getHighHrInterval() {
+        return highHrInterval;
+    }
+
+    public int getLowPaceInterval() {
+        return lowPaceInterval;
+    }
+
+    public int getHighPaceInterval() {
+        return highPaceInterval;
+    }
+
+    public int getRacePace() {
+        return racePace;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -79,16 +158,8 @@ public class User {
         this.gender = gender;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
     }
 
     public void setLevel(int level) {
@@ -98,47 +169,35 @@ public class User {
     public void setRestingHR(int restingHR) {
         this.restingHR = restingHR;
     }
-    public void loadUser(){
-        try {
-            String str = "";
-            StringBuffer buf = new StringBuffer();
-            InputStream is = context.openFileInput(filename);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-/*            while ((str = reader.readLine()) != null) {
-                buf.append(str + "\n" );
-            }*/
-            setName(reader.readLine());
-            setGender(Integer.parseInt(reader.readLine()));
-            setHeight(Integer.parseInt(reader.readLine()));
-            setAge(Integer.parseInt(reader.readLine()));
-            setWeight(Float.parseFloat(reader.readLine()));
-            setLevel(Integer.parseInt(reader.readLine()));
-            setRestingHR(Integer.parseInt(reader.readLine()));
-        } catch (Exception e){
-            Log.e("ULOADERR", e.getMessage());
 
-        }
-
-        
+    public void setLowHrWeightLoss(int lowHrWeightLoss) {
+        this.lowHrWeightLoss = lowHrWeightLoss;
     }
 
-    public void saveUser(){
-        FileOutputStream outputStream;
-        String string = name + "\n" + gender + "\n" + height + "\n" + age + "\n" + weight + "\n"
-                + level + "\n" + restingHR + "\n";
-        try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public void setHighHrWeightLoss(int highHrWeightLoss) {
+        this.highHrWeightLoss = highHrWeightLoss;
     }
 
+    public void setLowHrInterval(int lowHrInterval) {
+        this.lowHrInterval = lowHrInterval;
+    }
 
+    public void setHighHrInterval(int highHrInterval) {
+        this.highHrInterval = highHrInterval;
+    }
 
+    public void setLowPaceInterval(int lowPaceInterval) {
+        this.lowPaceInterval = lowPaceInterval;
+    }
 
+    public void setHighPaceInterval(int highPaceInterval) {
+        this.highPaceInterval = highPaceInterval;
+    }
+
+    public void setRacePace(int racePace) {
+        this.racePace = racePace;
+    }
 }
+
 
 
