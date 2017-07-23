@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.jwjibilian.runificationandroid.R;
 import com.example.jwjibilian.runificationandroid.controller.Pace;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
+import com.example.jwjibilian.runificationandroid.controller.TrainingMode;
 import com.example.jwjibilian.runificationandroid.model.User;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
@@ -47,6 +50,14 @@ public class IntervalTraining extends AppCompatActivity {
     private EditText intensityHrTxt;
     private EditText currHrTxt;
     private EditText currPaceTxt;
+    private TextView intervalIdxTxt;
+    private TextView intervalTotalTxt;
+
+    private Handler intervalTimer;
+    private Runnable intervalTh;
+    private int numIntervals;
+    private int intervalCnter;
+    private TrainingMode currMode;
 
     /*****************************************
      * Load user parameters for this training
@@ -74,7 +85,8 @@ public class IntervalTraining extends AppCompatActivity {
         currPaceTxt.setText(String.valueOf(0));
 
         // Update Sonification Mgr
-//        sonify.setHrParams(lowHr, highHr, restHr);
+        sonify.setHrParams(recoveryHr, intensityHr, user.getRestingHR());
+        sonify.setMode(TrainingMode.INTERVAL_RECOVERY);
     }
 
     /*****************************************
@@ -83,18 +95,56 @@ public class IntervalTraining extends AppCompatActivity {
     public void onStartClick(View view){
         sonify.start();
 
+        // Set durations
+        totalDuration = Integer.parseInt(totalDurText.getText().toString());
+        intervalDuration = Integer.parseInt(intervalDurText.getText().toString());
+        numIntervals = totalDuration / intervalDuration;
+        intervalIdxTxt.setText(String.valueOf(intervalCnter));
+        intervalTotalTxt.setText(String.valueOf(numIntervals));
+
+        // Start Interval creation
+        intervalCnter = 1;
+        intervalTh = new Runnable() {
+            @Override
+            public void run() {
+                intervalCnter++;
+
+                if (intervalCnter > numIntervals) {
+                    sonify.playTrainingComplete();
+                    stopSession();
+                    return;
+                }
+
+                // Toggle training mode
+                if (currMode == TrainingMode.INTERVAL_INTENSITY){
+                    currMode = TrainingMode.INTERVAL_RECOVERY;
+                }
+                else {
+                    currMode = TrainingMode.INTERVAL_INTENSITY;
+                }
+                sonify.setMode(currMode);
+                sonify.playIntervalChange();
+                intervalIdxTxt.setText(String.valueOf(intervalCnter));
+                intervalTimer.postDelayed(this, 60000*intervalDuration);
+            }
+        };
+        intervalTimer.postDelayed(intervalTh, 60000*intervalDuration);
+        currMode = TrainingMode.INTERVAL_RECOVERY;
+
         // Enable Stop and disable Start buttons
         Button startBtn = (Button)findViewById(R.id.intervalStartBtn);
         Button stopBtn  = (Button)findViewById(R.id.intervalStopBtn);
         startBtn.setEnabled(false);
         stopBtn.setEnabled(true);
-
-        Pace pace = new Pace(getApplicationContext(),lm);
-        pace.getPaceUpdateText(currPaceTxt);
     }
 
     public void onStopClick(View view){
+        stopSession();
+    }
+
+    public void stopSession(){
         sonify.stop();
+        intervalTimer.removeCallbacks(intervalTh);
 
         // Disable Stop and Enable Start buttons
         Button startBtn = (Button)findViewById(R.id.intervalStartBtn);
@@ -102,7 +152,6 @@ public class IntervalTraining extends AppCompatActivity {
         startBtn.setEnabled(true);
         stopBtn.setEnabled(false);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,14 +174,16 @@ public class IntervalTraining extends AppCompatActivity {
         }
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Set handles to text fields
-        totalDurText  = (EditText)findViewById(R.id.totalDurTxt);
-        intervalDurText  = (EditText)findViewById(R.id.intervalDurText);
-        recoveryPaceTxt  = (EditText)findViewById(R.id.maxRecoveryPaceText);
-        recoveryHrTxt  = (EditText)findViewById(R.id.maxRecoveryHrText);
-        intensityPaceTxt  = (EditText)findViewById(R.id.minIntensityPaceText);
-        intensityHrTxt  = (EditText)findViewById(R.id.minIntensityHrText);
-        currHrTxt  = (EditText)findViewById(R.id.currHrText);
-        currPaceTxt  = (EditText)findViewById(R.id.currPaceText);
+        totalDurText        = (EditText)findViewById(R.id.totalDurTxt);
+        intervalDurText     = (EditText)findViewById(R.id.intervalDurText);
+        recoveryPaceTxt     = (EditText)findViewById(R.id.maxRecoveryPaceText);
+        recoveryHrTxt       = (EditText)findViewById(R.id.maxRecoveryHrText);
+        intensityPaceTxt    = (EditText)findViewById(R.id.minIntensityPaceText);
+        intensityHrTxt      = (EditText)findViewById(R.id.minIntensityHrText);
+        currHrTxt           = (EditText)findViewById(R.id.currHrText);
+        currPaceTxt         = (EditText)findViewById(R.id.currPaceText);
+        intervalIdxTxt      = (TextView)findViewById(R.id.currIntervalIdx);
+        intervalTotalTxt    = (TextView)findViewById(R.id.totalNumIntervals);
 
         sonify = new Sonification(this.getApplicationContext());
         loadUserInfo();
@@ -149,6 +200,12 @@ public class IntervalTraining extends AppCompatActivity {
         };
         PebbleKit.registerReceivedDataHandler(getApplicationContext(), pebbleDataReceiver);
 
+        // Read Pace data
+        Pace pace = new Pace(getApplicationContext(),lm);
+        pace.getPaceUpdateText(currPaceTxt);
+
+        // Set timer
+        intervalTimer = new Handler();
     }
 
     private void updateHr(int newHr){

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.jwjibilian.runificationandroid.R;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
+import com.example.jwjibilian.runificationandroid.controller.TrainingMode;
 import com.example.jwjibilian.runificationandroid.model.User;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
@@ -60,6 +61,7 @@ public class WeightLossTraining extends AppCompatActivity {
 
         // Update Sonification Mgr
         sonify.setHrParams(lowHr, highHr, restHr);
+        sonify.setMode(TrainingMode.WEIGHT_LOSS);
     }
 
     /*****************************************

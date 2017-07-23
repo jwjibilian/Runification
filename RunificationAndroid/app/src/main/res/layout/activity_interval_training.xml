@@ -76,7 +76,7 @@
 
         <LinearLayout
             android:id="@+id/recoveryPaceLay"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
@@ -139,7 +139,7 @@
 
         <LinearLayout
             android:id="@+id/intensityPaceLay"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             tools:layout_editor_absoluteX="56dp"
@@ -154,7 +154,7 @@
 
             <EditText
                 android:id="@+id/minIntensityPaceText"
-                android:layout_width="124dp"
+                android:layout_width="84dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="min/mile"
@@ -164,12 +164,12 @@
                 android:id="@+id/minIntensityHrLbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.08"
                 android:text="HR:" />
 
             <EditText
                 android:id="@+id/minIntensityHrText"
-                android:layout_width="94dp"
+                android:layout_width="71dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="bpm"
@@ -196,9 +196,46 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
 
         <LinearLayout
-            android:id="@+id/sessionHrLay"
-            android:layout_width="match_parent"
+            android:id="@+id/numIntervalLay"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TextView
+                android:id="@+id/numIntervalLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Interval:\t" />
+
+            <TextView
+                android:id="@+id/currIntervalIdx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/intervalSepLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="\t/\t" />
+
+            <TextView
+                android:id="@+id/totalNumIntervals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sessionHrLay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <TextView
@@ -220,7 +257,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Pace:\n(min/mile)" />
+                android:text="Pace (min/mile):" />
 
             <EditText
                 android:id="@+id/currPaceText"
