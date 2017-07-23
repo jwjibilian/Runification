@@ -3,7 +3,6 @@ package com.example.jwjibilian.runificationandroid.view;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -36,9 +35,9 @@ public class IntervalTraining extends AppCompatActivity {
 
     private int totalDuration;
     private int intervalDuration;
-    private int recoveryPace;
+    private double recoveryPace;
     private int recoveryHr;
-    private int intensityPace;
+    private double intensityPace;
     private int intensityHr;
     LocationManager lm;
 
@@ -58,6 +57,11 @@ public class IntervalTraining extends AppCompatActivity {
     private int numIntervals;
     private int intervalCnter;
     private TrainingMode currMode;
+
+    Pace paceReader;
+    private Handler paceReadTimer;
+    private Runnable paceReadTh;
+
 
     /*****************************************
      * Load user parameters for this training
@@ -86,6 +90,7 @@ public class IntervalTraining extends AppCompatActivity {
 
         // Update Sonification Mgr
         sonify.setHrParams(recoveryHr, intensityHr, user.getRestingHR());
+        sonify.setPaceParams(recoveryPace, intensityPace);
         sonify.setMode(TrainingMode.INTERVAL_RECOVERY);
     }
 
@@ -101,6 +106,14 @@ public class IntervalTraining extends AppCompatActivity {
         numIntervals = totalDuration / intervalDuration;
         intervalIdxTxt.setText(String.valueOf(intervalCnter));
         intervalTotalTxt.setText(String.valueOf(numIntervals));
+
+        // Set Pace/Hr values
+        recoveryPace = Double.parseDouble(recoveryPaceTxt.getText().toString());
+        recoveryHr   = Integer.parseInt(recoveryHrTxt.getText().toString());
+        intensityPace = Double.parseDouble(intensityPaceTxt.getText().toString());
+        intensityHr   = Integer.parseInt(intensityHrTxt.getText().toString());
+        sonify.setPaceParams(recoveryPace, intensityPace);
+        sonify.setHrParams(recoveryHr, intensityHr, user.getRestingHR());
 
         // Start Interval creation
         intervalCnter = 1;
@@ -130,6 +143,7 @@ public class IntervalTraining extends AppCompatActivity {
         };
         intervalTimer.postDelayed(intervalTh, 60000*intervalDuration);
         currMode = TrainingMode.INTERVAL_RECOVERY;
+        intervalIdxTxt.setText(String.valueOf(intervalCnter));
 
         // Enable Stop and disable Start buttons
         Button startBtn = (Button)findViewById(R.id.intervalStartBtn);
@@ -201,15 +215,30 @@ public class IntervalTraining extends AppCompatActivity {
         PebbleKit.registerReceivedDataHandler(getApplicationContext(), pebbleDataReceiver);
 
         // Read Pace data
-        Pace pace = new Pace(getApplicationContext(),lm);
-        pace.getPaceUpdateText(currPaceTxt);
+        paceReader = new Pace(getApplicationContext(),lm);
+        paceReader.getPaceUpdateText(currPaceTxt);
+
+        paceReadTimer = new Handler();
+        paceReadTh = new Runnable() {
+            @Override
+            public void run() {
+                updatePace(paceReader.getPace());
+                paceReadTimer.postDelayed(this, 1000);  // Read pace every second
+            }
+        };
+        paceReadTimer.postDelayed(paceReadTh, 0);   // start reading pace right away
 
         // Set timer
         intervalTimer = new Handler();
+
     }
 
     private void updateHr(int newHr){
         currHrTxt.setText(String.valueOf(newHr));
         sonify.updateHr(newHr);
+    }
+
+    private void updatePace(double newPace){
+        sonify.updatePace(newPace);
     }
 }

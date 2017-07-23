@@ -68,6 +68,9 @@ public class WeightLossTraining extends AppCompatActivity {
      * Start/Stop buttons
      *****************************************/
     public void onStartClick(View view){
+        // Update HR bounds
+        sonify.setLowHr(Integer.parseInt(lowHrTxt.toString()));
+        sonify.setHighHr(Integer.parseInt(highHrTxt.toString()));
         sonify.start();
 
         // Enable Stop and disable Start buttons
@@ -115,31 +118,6 @@ public class WeightLossTraining extends AppCompatActivity {
             }
         };
         PebbleKit.registerReceivedDataHandler(getApplicationContext(), pebbleDataReceiver);
-
-        // Set Listeners for bounds text views
-        lowHrTxt.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            public void afterTextChanged(Editable hr) {
-                try {
-                    int newLowHr = Integer.parseInt(hr.toString());
-                    sonify.setLowHr(newLowHr);
-                }
-                catch (NumberFormatException e){ Log.e(TAG, e.getMessage());}
-            }
-        });
-
-        highHrTxt.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            public void afterTextChanged(Editable hr) {
-                try {
-                    int newHighHr = Integer.parseInt(hr.toString());
-                    sonify.setHighHr(newHighHr);
-                }
-                catch (NumberFormatException e){ Log.e(TAG, e.getMessage());}
-            }
-        });
     }
 
     private void updateHr(int newHr){
