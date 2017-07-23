@@ -158,25 +158,10 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="148dp" />
 
-        <EditText
-            android:id="@+id/CurrentHR"
-            android:layout_width="62dp"
-            android:layout_height="43dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number"
-            android:selectAllOnFocus="false"
-            android:singleLine="false"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="134dp"
-            tools:layout_editor_absoluteY="142dp" />
-
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/CurrentHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="BPM"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:visibility="visible"
@@ -206,22 +191,8 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="148dp" />
 
-        <EditText
-            android:id="@+id/avgHR"
-            android:layout_width="62dp"
-            android:layout_height="43dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="number"
-            android:selectAllOnFocus="false"
-            android:singleLine="false"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="134dp"
-            tools:layout_editor_absoluteY="142dp" />
-
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/avgHR"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

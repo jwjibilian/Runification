@@ -1,6 +1,12 @@
 package com.example.jwjibilian.runificationandroid.view;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.example.jwjibilian.runificationandroid.controller.Pace;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
 import com.example.jwjibilian.runificationandroid.model.User;
 import com.getpebble.android.kit.PebbleKit;
@@ -17,6 +24,7 @@ import java.util.UUID;
 
 public class IntervalTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private User user = User.getInstance(this);
     Sonification sonify;
 
@@ -29,6 +37,7 @@ public class IntervalTraining extends AppCompatActivity {
     private int recoveryHr;
     private int intensityPace;
     private int intensityHr;
+    LocationManager lm;
 
     private EditText totalDurText;
     private EditText intervalDurText;
@@ -79,6 +88,9 @@ public class IntervalTraining extends AppCompatActivity {
         Button stopBtn  = (Button)findViewById(R.id.intervalStopBtn);
         startBtn.setEnabled(false);
         stopBtn.setEnabled(true);
+
+        Pace pace = new Pace(getApplicationContext(),lm);
+        pace.getPaceUpdateText(currPaceTxt);
     }
 
     public void onStopClick(View view){
@@ -96,7 +108,22 @@ public class IntervalTraining extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interval_training);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // No explanation needed, we can request the permission.
 
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        } else {
+            //Permission is granted
+        }
+        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Set handles to text fields
         totalDurText  = (EditText)findViewById(R.id.totalDurTxt);
         intervalDurText  = (EditText)findViewById(R.id.intervalDurText);

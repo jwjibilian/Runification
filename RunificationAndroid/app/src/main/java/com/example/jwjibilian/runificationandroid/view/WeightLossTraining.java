@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.jwjibilian.runificationandroid.R;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
@@ -36,8 +37,8 @@ public class WeightLossTraining extends AppCompatActivity {
     private static final UUID APP_UUID = UUID.fromString("3ccbcc65-4bab-47af-ad7b-4a17126fcf1c");
     private static PebbleKit.PebbleDataReceiver pebbleDataReceiver;
 
-    private EditText currHrTxt;
-    private EditText avgHrTxt;
+    private TextView currHrTxt;
+    private TextView avgHrTxt;
     private EditText lowHrTxt;
     private EditText highHrTxt;
 
@@ -95,8 +96,8 @@ public class WeightLossTraining extends AppCompatActivity {
         // Set handles to text fields
         lowHrTxt  = (EditText)findViewById(R.id.LowHRGoal);
         highHrTxt = (EditText)findViewById(R.id.HighHRGoal);
-        currHrTxt = (EditText)findViewById(R.id.CurrentHR);
-        avgHrTxt  = (EditText)findViewById(R.id.avgHR);
+        currHrTxt = (TextView) findViewById(R.id.CurrentHR);
+        avgHrTxt  = (TextView) findViewById(R.id.avgHR);
 
         sonify = new Sonification(this.getApplicationContext());
         loadHrParams();
