@@ -2,127 +2,266 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/intervalLay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.jwjibilian.runificationandroid.view.IntervalTraining">
 
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
+        android:id="@+id/durationLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="M:S/Mile"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:visibility="visible"
-        android:layout_marginTop="33dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"
-        app:layout_constraintLeft_toRightOf="@+id/LowIntervalText"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="M:S/Mile"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintLeft_toRightOf="@+id/editText3"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Duration:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="128dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="75dp"
-        android:text="Low:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp" />
+        <TextView
+            android:id="@+id/totalDurLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Duration (min):"
+            android:visibility="visible" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="High:"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp" />
+        <EditText
+            android:id="@+id/totalDurTxt"
+            android:layout_width="84dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="20"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/totalDurLbl" />
 
-    <EditText
-        android:id="@+id/LowIntervalText"
-        android:layout_width="107dp"
-        android:layout_height="44dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="75dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="M:S"
-        app:layout_constraintBottom_toBottomOf="@+id/textView10"
-        app:layout_constraintLeft_toRightOf="@+id/textView10"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp" />
+        <TextView
+            android:id="@+id/intervalDurLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="per Interval (min):" />
 
-    <EditText
-        android:id="@+id/DurationText"
-        android:layout_width="107dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="M:S"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="121dp"
-        android:layout_marginLeft="112dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/textView16"
-        app:layout_constraintVertical_bias="0.06999999"
-        android:layout_marginStart="112dp" />
+        <EditText
+            android:id="@+id/intervalDurText"
+            android:layout_width="97dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="20"
+            android:inputType="number" />
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="107dp"
-        android:layout_height="44dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="M:S"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginStart="8dp" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/IntervalStartButton"
+    <LinearLayout
+        android:id="@+id/recoveryLay"
         android:layout_width="368dp"
-        android:layout_height="50dp"
-        android:text="Start"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="191dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/durationLay">
+
+        <TextView
+            android:id="@+id/recoveryLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recovery (max)"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
+
+        <LinearLayout
+            android:id="@+id/recoveryPaceLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/durationLay">
+
+            <TextView
+                android:id="@+id/maxRecoveryPaceLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pace:" />
+
+            <EditText
+                android:id="@+id/maxRecoveryPaceText"
+                android:layout_width="118dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="min/mile"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/maxRecoveryHrLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="HR:" />
+
+            <EditText
+                android:id="@+id/maxRecoveryHrText"
+                android:layout_width="74dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.06"
+                android:ems="10"
+                android:hint="bpm"
+                android:inputType="number" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/intensityLay"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/recoveryLay"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="24dp">
+
+        <TextView
+            android:id="@+id/intensityLbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Intensity (min)"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
+
+        <LinearLayout
+            android:id="@+id/intensityPaceLay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="329dp">
+
+            <TextView
+                android:id="@+id/minIntensityPaceLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pace:" />
+
+            <EditText
+                android:id="@+id/minIntensityPaceText"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="min/mile"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/minIntensityHrLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="HR:" />
+
+            <EditText
+                android:id="@+id/minIntensityHrText"
+                android:layout_width="94dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="bpm"
+                android:inputType="number" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sessionLay"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/intensityLay">
+
+        <TextView
+            android:id="@+id/sessionLbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Session"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />
+
+        <LinearLayout
+            android:id="@+id/sessionHrLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/currHrLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="HR:" />
+
+            <EditText
+                android:id="@+id/currHrText"
+                android:layout_width="108dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/currPaceLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pace:\n(min/mile)" />
+
+            <EditText
+                android:id="@+id/currPaceText"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
+
+        <Button
+            android:id="@+id/intervalStartBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:onClick="onStartClick"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/intervalStopBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:onClick="onStopClick"
+            android:text="Stop" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

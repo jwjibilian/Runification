@@ -47,10 +47,6 @@ public class WeightLossTraining extends AppCompatActivity {
      * Load user parameters for this training
      *****************************************/
     private void loadHrParams(){
-//        int restHr = 70;
-//        int lowHr  = 60;
-//        int highHr = 100;
-
         // Get current user Heart Rate parameters
         int restHr = user.getRestingHR();
         int lowHr  = user.getLowHrWeightLoss();

@@ -90,7 +90,7 @@ public class UserInfo extends AppCompatActivity {
                 // Compute Interval paces
                 int racePaceVal = Integer.parseInt(racePace.getText().toString());
                 u.setRacePace(racePaceVal);
-                u.setHighPaceInterval((int)(1.03 * racePaceVal));
+                u.setHighPaceInterval((int)(racePaceVal / 1.03));
                 u.setLowPaceInterval(10);
 
                 // Save user info into internal storage (file)
