@@ -148,7 +148,7 @@ public class TestSonification extends AppCompatActivity {
             else if (diff < 2.0){level = 4.0f;}
             else               {level = 5.0f;}
 
-            PdBase.sendFloat("overPace", 1.0f);
+            PdBase.sendFloat("underPace", 1.0f);
         }
 
         PdBase.sendFloat("alertPaceLevel", level);
