@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.example.jwjibilian.runificationandroid.controller.DataRecord;
 import com.example.jwjibilian.runificationandroid.controller.Pace;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
 import com.example.jwjibilian.runificationandroid.controller.TrainingMode;
@@ -61,7 +62,7 @@ public class IntervalTraining extends AppCompatActivity {
     Pace paceReader;
     private Handler paceReadTimer;
     private Runnable paceReadTh;
-
+    private DataRecord dr;
 
     /*****************************************
      * Load user parameters for this training
@@ -99,6 +100,7 @@ public class IntervalTraining extends AppCompatActivity {
      *****************************************/
     public void onStartClick(View view){
         sonify.start();
+
 
         // Set durations
         totalDuration = Integer.parseInt(totalDurText.getText().toString());
@@ -186,6 +188,7 @@ public class IntervalTraining extends AppCompatActivity {
         } else {
             //Permission is granted
         }
+        dr = new DataRecord(getApplicationContext(),this);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Set handles to text fields
         totalDurText        = (EditText)findViewById(R.id.totalDurTxt);
@@ -222,6 +225,7 @@ public class IntervalTraining extends AppCompatActivity {
         paceReadTh = new Runnable() {
             @Override
             public void run() {
+                dr.save(paceReader.getPace() + "");
                 updatePace(paceReader.getPace());
                 paceReadTimer.postDelayed(this, 1000);  // Read pace every second
             }
