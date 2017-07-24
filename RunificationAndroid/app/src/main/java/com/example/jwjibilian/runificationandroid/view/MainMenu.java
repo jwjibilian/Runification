@@ -51,6 +51,16 @@ public class MainMenu extends AppCompatActivity {
             }
         });
 
+        //Test Sonification Button
+        Button sonifyTest = (Button) findViewById(R.id.sonifyTestBtn);
+        sonifyTest.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), TestSonification.class);
+                startActivity(myIntent);
+            }
+        });
+
         //this stuff is what I usded to get communications working with the watch
         comms = new PebbleConnectivity(getApplicationContext());
     }
