@@ -3,8 +3,10 @@ package com.example.jwjibilian.runificationandroid.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jwjibilian.runificationandroid.R;
+import com.example.jwjibilian.runificationandroid.controller.DataRecord;
+import com.example.jwjibilian.runificationandroid.controller.Pace;
 import com.example.jwjibilian.runificationandroid.controller.Sonification;
 import com.example.jwjibilian.runificationandroid.controller.TrainingMode;
 import com.example.jwjibilian.runificationandroid.model.User;
@@ -29,6 +33,7 @@ import org.puredata.core.utils.IoUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class WeightLossTraining extends AppCompatActivity {
@@ -42,8 +47,20 @@ public class WeightLossTraining extends AppCompatActivity {
     private TextView avgHrTxt;
     private EditText lowHrTxt;
     private EditText highHrTxt;
+    private  int avgHr;
+    private DataRecord dr;
 
     Sonification sonify;
+
+    private Handler recorder;
+    private Runnable recorderTh;
+    DecimalFormat formatter = new DecimalFormat("#0.00");
+
+    private Handler pace;
+    private Runnable paceTh;
+
+    private Pace paceTr;
+    private double paceVal = 0;
 
     /*****************************************
      * Load user parameters for this training
@@ -69,8 +86,9 @@ public class WeightLossTraining extends AppCompatActivity {
      *****************************************/
     public void onStartClick(View view){
         // Update HR bounds
-        sonify.setLowHr(Integer.parseInt(lowHrTxt.toString()));
-        sonify.setHighHr(Integer.parseInt(highHrTxt.toString()));
+        
+        sonify.setLowHr(Integer.parseInt(lowHrTxt.getText().toString()));
+        sonify.setHighHr(Integer.parseInt(highHrTxt.getText().toString()));
         sonify.start();
 
         // Enable Stop and disable Start buttons
@@ -78,6 +96,8 @@ public class WeightLossTraining extends AppCompatActivity {
         Button stopBtn  = (Button)findViewById(R.id.stopWeightLoss);
         startBtn.setEnabled(false);
         stopBtn.setEnabled(true);
+        pace.postDelayed(paceTh, 5000);
+        recorder.postDelayed(recorderTh,4000);
     }
 
     public void onStopClick(View view){
@@ -88,6 +108,9 @@ public class WeightLossTraining extends AppCompatActivity {
         Button stopBtn  = (Button)findViewById(R.id.stopWeightLoss);
         startBtn.setEnabled(true);
         stopBtn.setEnabled(false);
+        pace.removeCallbacks(paceTh);
+        recorder.removeCallbacks(recorderTh);
+        dr.close();
     }
 
     /*****************************************
@@ -97,12 +120,14 @@ public class WeightLossTraining extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_loss_training);
-
+        paceTr = new Pace(getApplicationContext(), (LocationManager) getSystemService(LOCATION_SERVICE));
         // Set handles to text fields
-        lowHrTxt  = (EditText)findViewById(R.id.LowHRGoal);
-        highHrTxt = (EditText)findViewById(R.id.HighHRGoal);
+        lowHrTxt  = (EditText) findViewById(R.id.LowHRGoal);
+        highHrTxt = (EditText) findViewById(R.id.HighHRGoal);
         currHrTxt = (TextView) findViewById(R.id.CurrentHR);
         avgHrTxt  = (TextView) findViewById(R.id.avgHR);
+
+        dr = new DataRecord(getApplicationContext(), this, "Weight");
 
         sonify = new Sonification(this.getApplicationContext());
         loadHrParams();
@@ -118,11 +143,33 @@ public class WeightLossTraining extends AppCompatActivity {
             }
         };
         PebbleKit.registerReceivedDataHandler(getApplicationContext(), pebbleDataReceiver);
+
+        recorder = new Handler();
+        recorderTh = new Runnable() {
+            @Override
+            public void run() {
+                dr.save(formatter.format(paceVal)+","+formatter.format(avgHr)+"\n");
+                recorder.postDelayed(this, 4000);
+            }
+        };
+
+
+        pace = new Handler();
+
+        paceTh = new Runnable() {
+            @Override
+            public void run() {
+                paceVal = paceTr.getPace();
+                pace.postDelayed(paceTh, 5000);
+
+
+            }
+        };
     }
 
     private void updateHr(int newHr){
         currHrTxt.setText(String.valueOf(newHr));
-        int avgHr = sonify.updateHr(newHr);
+        avgHr = sonify.updateHr(newHr);
         avgHrTxt.setText(String.valueOf(avgHr));
     }
 }

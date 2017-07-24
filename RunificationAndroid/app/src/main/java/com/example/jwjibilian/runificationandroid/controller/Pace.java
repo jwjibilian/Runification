@@ -16,9 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.security.Provider;
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class Pace implements LocationListener {
+    DecimalFormat formatter = new DecimalFormat("#0.00");
     LocationManager locationManager;
     String provider;
     double prevLat = 0;
@@ -44,7 +46,7 @@ public class Pace implements LocationListener {
 
         // Getting the name of the provider that meets the criteria
 
-        provider = locationManager.getBestProvider(criteria, true);
+        provider = locationManager.getBestProvider(criteria, false);
 
         if (ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -82,12 +84,16 @@ public class Pace implements LocationListener {
         locationManager.requestLocationUpdates(provider, 1000, 0, this);
         location2 = location1;
         location1 = locationManager.getLastKnownLocation(provider);
-        Log.d("tick", "tock");
+        //Log.d("tick", "tock");
+
         if (location1 != null) {
             if (location2 != null) {
 
                 location1 = new Location(locationManager.getLastKnownLocation(provider));
-                return location1.distanceTo(location2);
+
+                double toUpdate = location1.distanceTo(location2);
+                double update = 1/(toUpdate * 0.000621371 *12);
+                return update;
             } else {
                 return 0;
             }
@@ -111,9 +117,10 @@ public class Pace implements LocationListener {
                 Log.d("LM", location1 + "");
                 double toRet = hi.getPace();
                 Log.d("Dist", toRet + "");
-                double update = 1/(toRet * 0.000621371 *12);
-                Log.d("Dist Mile", update +"");
-                upText.setText(update + "");
+
+                Log.d("Dist Mile", toRet +"");
+
+                upText.setText(formatter.format(toRet));
                 paceTimer.postDelayed(paceTh, 5000);
 
 

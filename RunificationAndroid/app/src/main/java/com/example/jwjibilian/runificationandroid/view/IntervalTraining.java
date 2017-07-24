@@ -23,7 +23,11 @@ import com.example.jwjibilian.runificationandroid.model.User;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
+import org.xml.sax.HandlerBase;
+
+import java.text.DecimalFormat;
 import java.util.UUID;
+import java.util.concurrent.RunnableFuture;
 
 public class IntervalTraining extends AppCompatActivity {
     private static final String TAG = "RUNIF";
@@ -59,10 +63,15 @@ public class IntervalTraining extends AppCompatActivity {
     private int intervalCnter;
     private TrainingMode currMode;
 
-    Pace paceReader;
+    private Pace paceReader;
     private Handler paceReadTimer;
     private Runnable paceReadTh;
     private DataRecord dr;
+    private int newHr;
+
+    private Handler recorder;
+    private Runnable recorderTh;
+    DecimalFormat formatter = new DecimalFormat("#0.00");
 
     /*****************************************
      * Load user parameters for this training
@@ -116,7 +125,7 @@ public class IntervalTraining extends AppCompatActivity {
         intensityHr   = Integer.parseInt(intensityHrTxt.getText().toString());
         sonify.setPaceParams(recoveryPace, intensityPace);
         sonify.setHrParams(recoveryHr, intensityHr, user.getRestingHR());
-
+        dr = new DataRecord(getApplicationContext(),this, "Int");
         // Start Interval creation
         intervalCnter = 1;
         intervalTh = new Runnable() {
@@ -147,6 +156,9 @@ public class IntervalTraining extends AppCompatActivity {
         currMode = TrainingMode.INTERVAL_RECOVERY;
         intervalIdxTxt.setText(String.valueOf(intervalCnter));
 
+        //start data recoder
+        recorder.postDelayed(recorderTh,0);
+
         // Enable Stop and disable Start buttons
         Button startBtn = (Button)findViewById(R.id.intervalStartBtn);
         Button stopBtn  = (Button)findViewById(R.id.intervalStopBtn);
@@ -161,7 +173,8 @@ public class IntervalTraining extends AppCompatActivity {
     public void stopSession(){
         sonify.stop();
         intervalTimer.removeCallbacks(intervalTh);
-
+        recorder.removeCallbacks(recorderTh);
+        dr.close();
         // Disable Stop and Enable Start buttons
         Button startBtn = (Button)findViewById(R.id.intervalStartBtn);
         Button stopBtn  = (Button)findViewById(R.id.intervalStopBtn);
@@ -188,7 +201,7 @@ public class IntervalTraining extends AppCompatActivity {
         } else {
             //Permission is granted
         }
-        dr = new DataRecord(getApplicationContext(),this);
+
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Set handles to text fields
         totalDurText        = (EditText)findViewById(R.id.totalDurTxt);
@@ -211,7 +224,7 @@ public class IntervalTraining extends AppCompatActivity {
                 PebbleKit.sendAckToPebble(context, transactionId);
 
                 // Get and Update HR value
-                int newHr = dict.getInteger(0).intValue();
+                newHr = dict.getInteger(0).intValue();
                 updateHr(newHr);
             }
         };
@@ -225,7 +238,6 @@ public class IntervalTraining extends AppCompatActivity {
         paceReadTh = new Runnable() {
             @Override
             public void run() {
-                dr.save(paceReader.getPace() + "");
                 updatePace(paceReader.getPace());
                 paceReadTimer.postDelayed(this, 1000);  // Read pace every second
             }
@@ -234,6 +246,16 @@ public class IntervalTraining extends AppCompatActivity {
 
         // Set timer
         intervalTimer = new Handler();
+
+        recorder = new Handler();
+        recorderTh = new Runnable() {
+            @Override
+            public void run() {
+                dr.save(formatter.format(paceReader.getPace())+","+formatter.format(newHr)+"\n");
+                recorder.postDelayed(this, 4000);
+            }
+        };
+
 
     }
 

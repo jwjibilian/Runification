@@ -10,6 +10,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.jwjibilian.runificationandroid.model.User;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -19,15 +21,24 @@ import java.io.OutputStreamWriter;
  */
 
 public class DataRecord {
+    User user;
     private static final int REQUESTCODE_STORAGE_PERMISSION = 1;
     private Context context;
     private String date;
     private String filename;
-    public DataRecord(Context context, Activity act){
+    private String dir;
+    private File  myFile;
+    private FileOutputStream fOut;
+    private OutputStreamWriter myOutWriter;
+
+    public DataRecord(Context context, Activity act,String type){
         this.context = context;
         storagePermitted(act);
-        date = (DateFormat.format("dd-MM-yyyyhh:mm:ss", new java.util.Date()).toString());
-        filename = "runifi"+date;
+        user = User.getInstance(context);
+        date = (DateFormat.format("ddMMyyyyhhmmss", new java.util.Date()).toString());
+        dir = Environment.getExternalStorageDirectory() + "";
+        filename = type+user.getName()+""+date+".txt";
+
         if (isExternalStorageWritable()){
 
         } else{
@@ -47,28 +58,31 @@ public class DataRecord {
             date = (DateFormat.format("dd-MM-yyyyhh:mm:ss", new java.util.Date()).toString());
 
 
-            File myFile = new File("/sdcard/run/", filename);
-            Log.d("Dir", myFile.exists() + "");
-            Log.d("Filepath", myFile.getPath()+ "" + Environment.MEDIA_MOUNTED);
-            if(!myFile.exists()){
+            myFile = new File(dir, filename);
+            Log.d("Dir", dir);
+            Log.d("Filepath", myFile.getPath()+ " " + Environment.MEDIA_MOUNTED);
+            if (!myFile.exists()){
 
-                myFile.mkdirs();
+                myFile.createNewFile();
             }
-            FileOutputStream fOut = new FileOutputStream(myFile,true);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+
+            fOut = new FileOutputStream(myFile,true);
+            myOutWriter = new OutputStreamWriter(fOut);
             myOutWriter.append(date+","+toSave );
+            myOutWriter.flush();
             myOutWriter.close();
             fOut.close();
 
-            Toast.makeText(context,"Text file Saved !" ,Toast.LENGTH_LONG).show();
+
+            Toast.makeText(context, dir ,Toast.LENGTH_LONG).show();
         }
 
         catch (java.io.IOException e) {
 
             //do something if an IOException occurs.
             Log.d("DataRec", e.getMessage()+""+e.toString());
-            Toast.makeText(context,"ERROR - Text could't be"+
-                    " added", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context,"ERROR - Text could't be"+
+            //        " added", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -90,6 +104,19 @@ public class DataRecord {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTCODE_STORAGE_PERMISSION);
 
         return false;
+
+    }
+    public void close(){
+        try{
+            myOutWriter.flush();
+            myOutWriter.close();
+            fOut.close();
+
+        } catch (Exception e){
+
+           Log.d("Close", e.toString());
+        }
+
 
     }
 }
