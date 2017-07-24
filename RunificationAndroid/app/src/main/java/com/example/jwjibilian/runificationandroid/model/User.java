@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class User {
 
     public void loadUser(){
         try {
+
             InputStream is = context.openFileInput(filename);
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
@@ -88,13 +90,14 @@ public class User {
     }
 
     public void saveUser(){
+        File file = new File(context.getFilesDir(), filename);
         FileOutputStream outputStream;
         String string = name + "\n" + gender + "\n" + age + "\n" + level + "\n" + restingHR + "\n"
                 + lowHrWeightLoss + "\n" + highHrWeightLoss + "\n"
                 + lowHrInterval + "\n" + highHrInterval + "\n"
                 + lowPaceInterval + "\n" + highPaceInterval+ "\n" + racePace + "\n";
         try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = context.openFileOutput(file.getPath(), Context.MODE_PRIVATE);
             outputStream.write(string.getBytes());
             outputStream.close();
         } catch (Exception e) {
