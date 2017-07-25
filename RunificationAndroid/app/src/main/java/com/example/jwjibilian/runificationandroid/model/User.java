@@ -97,11 +97,11 @@ public class User {
                 + lowHrInterval + "\n" + highHrInterval + "\n"
                 + lowPaceInterval + "\n" + highPaceInterval+ "\n" + racePace + "\n";
         try {
-            outputStream = context.openFileOutput(file.getPath(), Context.MODE_PRIVATE);
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write(string.getBytes());
             outputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("saveusererror", e.toString());
         }
     }
 
