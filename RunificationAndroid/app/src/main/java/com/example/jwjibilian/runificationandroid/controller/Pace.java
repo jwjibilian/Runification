@@ -96,7 +96,7 @@ public class Pace implements LocationListener {
                 double toUpdate = location1.distanceTo(location2);
                 double update = 1/(toUpdate * 0.000621371 * (60/(paceSample*(1.0/1000.0))));
 
-                if (update < 150){
+                if (update < 60){
                     prevValue = update;
                     return update;
 
