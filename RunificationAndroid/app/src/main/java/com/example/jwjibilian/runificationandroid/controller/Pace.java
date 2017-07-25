@@ -25,6 +25,7 @@ public class Pace implements LocationListener {
     String provider;
     double prevLat = 0;
     double prevLon = 0;
+    double prevValue = 0;
 
     Location location;
     Location location1;
@@ -33,6 +34,7 @@ public class Pace implements LocationListener {
     Context myContext;
     EditText upText;
     Pace hi = this;
+    public final int paceSample = 850;
 
     private Handler paceTimer;
     private Runnable paceTh;
@@ -81,7 +83,7 @@ public class Pace implements LocationListener {
             // for ActivityCompat#requestPermissions for more details.
             return 0;
         }
-        locationManager.requestLocationUpdates(provider, 1000, 0, this);
+        locationManager.requestLocationUpdates(provider, paceSample-100, 0, this);
         location2 = location1;
         location1 = locationManager.getLastKnownLocation(provider);
         //Log.d("tick", "tock");
@@ -92,14 +94,22 @@ public class Pace implements LocationListener {
                 location1 = new Location(locationManager.getLastKnownLocation(provider));
 
                 double toUpdate = location1.distanceTo(location2);
-                double update = 1/(toUpdate * 0.000621371 *12);
-                return update;
+                double update = 1/(toUpdate * 0.000621371 * (60/(paceSample*(1.0/1000.0))));
+
+                if (update < 150){
+                    prevValue = update;
+                    return update;
+
+                } else {
+                    return prevValue;
+
+                }
             } else {
                 return 0;
             }
 
         } else {
-            locationManager.requestLocationUpdates(provider, 1000, 0, this);
+            locationManager.requestLocationUpdates(provider, paceSample - 100, 0, this);
         }
         return 0;
 
@@ -121,13 +131,13 @@ public class Pace implements LocationListener {
                 Log.d("Dist Mile", toRet +"");
 
                 upText.setText(formatter.format(toRet));
-                paceTimer.postDelayed(paceTh, 5000);
+                paceTimer.postDelayed(paceTh, paceSample);
 
 
             }
         };
 
-        paceTimer.postDelayed(paceTh, 5000);
+        paceTimer.postDelayed(paceTh, paceSample);
 
 
 
